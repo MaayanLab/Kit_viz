@@ -26,11 +26,18 @@ def merge_sigs_to_mat():
     inst_sig = exp_sigs[sig_name]
 
     for inst_gene in inst_sig:
+
+      # fix sept problems
+      if '-SEP' in inst_gene:
+        inst_num = inst_gene.split('-')[0]
+        inst_gene = 'SEPT'+inst_num
+
       all_genes.append(inst_gene)
 
   print(len(all_genes))
-  all_genes = list(set(all_genes))
+  all_genes = sorted(list(set(all_genes)))
   print(len(all_genes))
+  print(all_genes)
 
   num_genes = len(all_genes)
 
