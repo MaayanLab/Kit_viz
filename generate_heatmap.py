@@ -14,14 +14,13 @@ def merge_exp_sigs():
 def merge_sigs_to_mat():
   exp_sigs = json_scripts.load_to_dict('proc_data/exp_sigs.json')
 
-  num_sigs = len(exp_sigs.keys())
+  all_sigs = sorted(exp_sigs.keys())
+  num_sigs = len(all_sigs)
 
   # collect all genes across all experimental signatures
   all_genes = []
 
   for sig_name in exp_sigs:
-
-    print(sig_name)
 
     inst_sig = exp_sigs[sig_name]
 
@@ -32,12 +31,12 @@ def merge_sigs_to_mat():
         inst_num = inst_gene.split('-')[0]
         inst_gene = 'SEPT'+inst_num
 
-      all_genes.append(inst_gene)
+      if inst_gene != '-':
+        all_genes.append(inst_gene)
 
   print(len(all_genes))
   all_genes = sorted(list(set(all_genes)))
   print(len(all_genes))
-  print(all_genes)
 
   num_genes = len(all_genes)
 
@@ -45,7 +44,32 @@ def merge_sigs_to_mat():
 
   mat = np.zeros([num_genes, num_sigs])
 
-  print(mat.shape)
+  # fill in the matrix
+  for sig_name in exp_sigs:
+
+    inst_sig = exp_sigs[sig_name]
+
+    col_index = all_sigs.index(sig_name)
+
+    for inst_gene in inst_sig :
+
+      # initialize value as false
+      inst_value = False
+
+      if inst_gene in all_genes:
+        inst_value = inst_sig[inst_gene]
+
+      if inst_value != False:
+
+        row_index = all_genes.index(inst_gene)
+
+        # fill in matrix
+        mat[row_index, col_index] = inst_value
+
+  # save as dataframe
+  df = pd.DataFrame(data=mat, columns = all_sigs, index = all_genes)
+
+  df.to_csv('proc_data/exp_sigs.txt', sep='\t')
 
 
 def load_sigs_to_json():
