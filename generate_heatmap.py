@@ -13,7 +13,7 @@ def merge_exp_sigs():
 
 def merge_sigs_to_mat():
 
-  tmp_exp_sigs = json_scripts.load_to_dict('proc_data/exp_sigs.json')
+  tmp_exp_sigs = json_scripts.load_to_dict('proc_data/exp-pert_sigs.json')
 
   exp_sigs = {}
   for inst_sig in tmp_exp_sigs:
@@ -79,7 +79,7 @@ def merge_sigs_to_mat():
   # save as dataframe
   df = pd.DataFrame(data=mat, columns = all_sigs, index = all_genes)
 
-  df.to_csv('proc_data/exp_sigs.txt', sep='\t')
+  df.to_csv('proc_data/exp-pert_sigs.txt', sep='\t')
 
 
 def load_sigs_to_json():
@@ -89,6 +89,16 @@ def load_sigs_to_json():
 
   # normal files
   file_names = glob.glob('files_2-17-2017/hdf_day*.txt')
+
+  pert_files = glob.glob('files_2-17-2017/Pert*.txt')
+
+  file_names = file_names + pert_files
+
+  print('\n\n')
+
+  print(file_names)
+
+  print('\n\n')
 
   # # full char dir files
   # file_names = glob.glob('files_2-17-2017/big*.txt')
@@ -116,6 +126,6 @@ def load_sigs_to_json():
 
     f.close()
 
-  json_scripts.save_to_json(exp_sigs, 'proc_data/exp_sigs.json', indent='indent')
+  json_scripts.save_to_json(exp_sigs, 'proc_data/exp-pert_sigs.json', indent='indent')
 
 main()
