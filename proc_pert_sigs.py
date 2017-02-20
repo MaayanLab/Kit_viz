@@ -19,8 +19,24 @@ def main():
     pert_name = inst_filename.split('/')[1].split('.json')[0]
 
     up_genes = inst_pert['upGenes']
-
     dn_genes = inst_pert['dnGenes']
+
+    bin_sig = []
+
+    for inst_gene in up_genes:
+      bin_sig.append(inst_gene + ',1')
+
+    for inst_gene in dn_genes:
+      bin_sig.append(inst_gene + ',-1')
+
+    # save bin_sig to file
+    fw = open('files_2-17-2017/' + pert_name + '.txt', 'w')
+
+    for inst_val in bin_sig:
+      fw.write(inst_val + '\n')
+
+    fw.close()
+
 
 
 main()
