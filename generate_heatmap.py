@@ -12,10 +12,20 @@ def merge_exp_sigs():
   merge_sigs_to_mat()
 
 def merge_sigs_to_mat():
-  exp_sigs = json_scripts.load_to_dict('proc_data/exp_sigs.json')
+
+  tmp_exp_sigs = json_scripts.load_to_dict('proc_data/exp_sigs.json')
+
+  exp_sigs = {}
+  for inst_sig in tmp_exp_sigs:
+
+    if 'CD34' not in inst_sig:
+      exp_sigs[inst_sig] = tmp_exp_sigs[inst_sig]
 
   all_sigs = sorted(exp_sigs.keys())
+
   num_sigs = len(all_sigs)
+
+  print('num_sigs: ' + str(num_sigs))
 
   # collect all genes across all experimental signatures
   all_genes = []
@@ -75,7 +85,13 @@ def merge_sigs_to_mat():
 def load_sigs_to_json():
   import glob
 
-  file_names = glob.glob('files_2-17-2017/hdf*.txt')
+  print('load')
+
+  # normal files
+  file_names = glob.glob('files_2-17-2017/hdf_day*.txt')
+
+  # # full char dir files
+  # file_names = glob.glob('files_2-17-2017/big*.txt')
 
   # store all signatures in a dictionary
   exp_sigs = {}
